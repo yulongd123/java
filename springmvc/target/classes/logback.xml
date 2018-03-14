@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!-- Define the log output home dir -->
+    <property name="LOG_HOME" value="../logs"/>
+    <property name="appName" value="webapp"></property>
+    <property name="pushName" value="wspush"></property>
+    <property name="connName" value="hwconn"></property>
+    <property name="otherName" value="others"></property>
+    <contextName>${appName}</contextName>
+
+    <!-- Print the log to the console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{64} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Print the log to the file -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Define the log file name -->
+        <file>${LOG_HOME}/${appName}.log</file>
+        <!-- Define the rolling policy of the log file -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${appName}-%d{yy-MM-dd}-%i.log</fileNamePattern>
+            <MaxHistory>30</MaxHistory>
+            <maxFileSize>100MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+            <minIndex>1</minIndex>
+            <maxIndex>20</maxIndex>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{64} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Print the log to the file -->
+    <appender name="otherFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Define the log file name -->
+        <file>${LOG_HOME}/${otherName}.log</file>
+        <!-- Define the rolling policy of the log file -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${otherName}-%d{yy-MM-dd}-%i.log</fileNamePattern>
+            <MaxHistory>30</MaxHistory>
+            <maxFileSize>30MB</maxFileSize>
+            <totalSizeCap>2GB</totalSizeCap>
+            <minIndex>1</minIndex>
+            <maxIndex>20</maxIndex>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{64} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="pushFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Define the log file name -->
+        <file>${LOG_HOME}/${pushName}.log</file>
+        <!-- Define the rolling policy of the log file -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${pushName}-%d{yy-MM-dd}-%i.log</fileNamePattern>
+            <MaxHistory>15</MaxHistory>
+            <maxFileSize>30MB</maxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+            <minIndex>1</minIndex>
+            <maxIndex>20</maxIndex>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{64} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    <appender name="connFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Define the log file name -->
+        <file>${LOG_HOME}/${connName}.log</file>
+        <!-- Define the rolling policy of the log file -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${connName}-%d{yy-MM-dd}-%i.log</fileNamePattern>
+            <MaxHistory>30</MaxHistory>
+            <maxFileSize>30MB</maxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+            <minIndex>1</minIndex>
+            <maxIndex>20</maxIndex>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{64} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Print com and org logs -->
+    <logger name="com" >
+        <level value="INFO"/>
+        <appender-ref ref="otherFILE"/>
+    </logger>
+    <logger name="org" >
+        <level value="INFO"/>
+        <appender-ref ref="otherFILE"/>
+    </logger>
+
+    <!-- Print xiaoshou logs -->
+    <logger name="com.xiaoshou" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <!-- Print webapp logs -->
+    <logger name="com.dywl" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="com.dywl.iot.backend.connector" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="connFile"/>
+    </logger>
+
+    <logger name="com.dywl.iot.service.jpush" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="pushFile"/>
+    </logger>
+
+    <logger name="com.dywl.iot.service.websocket" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="pushFile"/>
+    </logger>
+
+    <logger name="com.dywl.iot.service.push" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="pushFile"/>
+    </logger>
+
+    <!-- Print Spring logs -->
+    <logger name="org.springframework" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.hibernate.SQL" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="com.dywl.iot.service.push" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="pushFile"/>
+    </logger>
+
+    <!-- <logger name="org.hibernate.type.descriptor.sql.BasicBinder" >
+    	<level value="TRACE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+	<logger name="org.hibernate.type.descriptor.sql.BasicExtractor" >
+		<level value="TRACE"/>
+        <appender-ref ref="FILE"/>
+    </logger> -->
+
+</configuration>
